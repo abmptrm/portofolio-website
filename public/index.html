@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Portofolio by Ario" />
+    <meta property="og:description" content="Welcome To My Portofolio" />
+    <meta property="og:image" content="image/icons1.png" />
+    <title>Portofolio V2</title>
+    <link rel="shortcut icon" href="image/icons1.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/output.css">
+    <link rel="stylesheet" href="../node_modules/flowbite/dist/flowbite.min.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css" />
+    <link rel="stylesheet" href="js/slick/slick.css">
+    <link rel="stylesheet" href="js/slick/slick-theme.css">
+
+    <!-- <link rel="stylesheet" href="js/OwlCarousel/dist/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="js/OwlCarousel/dist/assets/owl.theme.default.min.css"> -->
+
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" rel="stylesheet" /> -->
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            min-height: 0;
+            min-width: 0;
+        }
+
+        #keAtas {
+            display: none;
+            position: fixed;
+            bottom: 45px;
+            right: 20px;
+            z-index: 99;
+            font-size: 13px;
+            border: white 3px solid;
+            outline: none;
+            background-color: #0180E2;
+            color: white;
+            cursor: pointer;
+            padding: 13px 16px;
+            border-radius: 100%;
+        }
+
+        #keAtas:hover {
+            background-color: #13254E;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button onclick="keAtas()" id="keAtas"><i class="fa-solid fa-chevron-up"></i></button>
+
+    <!-- Navigation Bar -->
+
+    <nav
+        class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600 shadow-lg ">
+        <div
+            class="container-nav max-w-screen-xl flex flex-wrap items-center justify-around py-6 px-6 md:transition-transform">
+            <a href="/" class="flex items-center">
+                <img src="image/icons1.png" class="h-8 mr-2" alt="Portofolio Logo">
+                <span
+                    class="self-center text-2xl font-medium text-gray-700 whitespace-nowrap dark:text-white">Portofolio</span>
+            </a>
+
+            <button data-collapse-toggle="navbar-sticky" type="button"
+                class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 "
+                aria-controls="navbar-sticky" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" />
+                </svg>
+
+            </button>
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto" id="navbar-sticky">
+                <ul
+                    class="flex flex-col p-4 md:p-0 mt-[2rem] font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900">
+                    <li>
+                        <a href="index.html"
+                            class="block py-2 pl-3 pr-4 text-custom-blue rounded hover:bg-gray-100 md:hover:bg-transparent md:bg-transparent md:p-0"
+                            aria-current="page">Home</a>
+                    </li>
+                    <li>
+                        <a href="#about"
+                            class="block py-2 pl-3 pr-4 text-gray-700 hover:text-custom-blue rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0">About</a>
+                    </li>
+                    <li>
+                        <a href="#tools"
+                            class="block py-2 pl-3 pr-4 text-gray-700 hover:text-custom-blue rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0">Tools</a>
+                    </li>
+                    <li>
+                        <a href="#project"
+                            class="block py-2 pl-3 pr-4 text-gray-700 hover:text-custom-blue rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0">Project</a>
+                    </li>
+                    <li>
+                        <a href="#contact"
+                            class="block py-2 pl-3 pr-4 text-gray-700 hover:text-custom-blue rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Navigation Bar -->
+
+    <!-- Content Main -->
+
+
+    <section class="bg-custom-blue-dark">
+        <div
+            class="bg-white bg-blend-multiply min-h-screen w-full py-10 px-[2rem] sm:px-[4rem] pt-[5.5rem] flex justify-between items-center">
+
+            <div class="mx-auto max-w-screen-xl text-start">
+                <h3 class="font-semibold text-3xl text-gray-700 flex">Hi&ensp;<img src="image/waving-hand.png"
+                        alt="hallo" width="30" class="animate-waving-hand"> ,</h3>
+                <h1 class="mb-4 text-6xl font-semibold tracking-tight leading-none text-gray-800">I'm <br
+                        class="block sm:hidden"> Ario Bimo Munfadhil</h1>
+                <p class="mb-5 text-2xl font-normal text-gray-600 lg:text-lg"><span id="kategori"></span>
+                </p>
+                <!-- <p class="mb-8 text-md font-normal text-gray-600 lg:text-lg">Saya adalah lulusan SMK jurusan Rekayasa Perangkat Lunak.<br> Punya pengalaman pernah membuat website. Mampu berpikir cepat, kreatif, <br>dan mengerti dasar-dasar HTML, CSS. Saya sedang mencari posisi Web Deveopment agar mengembangkan hobi sekaligus kemampuan saya.
+                </p> -->
+                <ul class="flex items-center mx-auto flex-wrap">
+                    <li><a href="https://www.instagram.com/abptrm_" target="_blank"><i
+                                class="fab fa-instagram text-3xl md:text-4xl mr-6 mb-6 text-gray-700 gradient-instagram "></i></a>
+                    </li>
+                    <li><a href="https://twitter.com/okvcxvx" target="_blank"><i
+                                class="fab fa-twitter text-3xl md:text-4xl mr-6 mb-6 text-gray-700 hover:text-custom-blue"></i></a>
+                    </li>
+                    <li><a href="https://open.spotify.com/user/8plgb8lpkakhbyabeat9oycn4?si=4dc1f786abed466d"
+                            target="_blank"><i
+                                class="fab fa-spotify text-3xl md:text-4xl mr-6 mb-6 text-gray-700 hover:text-green-500"></i></a>
+                    </li>
+                    <li><a href="https://www.linkedin.com/in/ario-bimo-munfadhil-939389225" target="_blank"><i
+                                class="fab fa-linkedin text-3xl md:text-4xl mr-6 mb-6 text-gray-700 hover:text-blue-800"></i></a>
+                    </li>
+                    <li><a href="https://github.com/abmptrm" target="_blank"><i
+                                class="fab fa-github text-3xl md:text-4xl mr-6 mb-6 text-gray-700 hover:text-black"></i></a>
+                    </li>
+                    <li><a href="https://discord.gg/hPuG4earFH" target="_blank"><i
+                                class="fab fa-discord text-3xl md:text-4xl mr-6 mb-6 text-gray-700 hover:text-purple-500"></i></a>
+                    </li>
+                </ul>
+                <div class="flex flex-col space-y-4 sm:flex-row sm:justify-start sm:space-y-0 sm:space-x-4">
+                    <a href="#project"
+                        class="inline-flex justify-center items-center py-3 px-5 font-medium text-center text-white rounded-md  bg-custom-blue hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
+                        My Project
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="ml-4 -mr-1 w-4 h-4"
+                            fill="currentColor" class="w-6 h-6">
+                            <path
+                                d="M19.906 9c.382 0 .749.057 1.094.162V9a3 3 0 00-3-3h-3.879a.75.75 0 01-.53-.22L11.47 3.66A2.25 2.25 0 009.879 3H6a3 3 0 00-3 3v3.162A3.756 3.756 0 014.094 9h15.812zM4.094 10.5a2.25 2.25 0 00-2.227 2.568l.857 6A2.25 2.25 0 004.951 21H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-2.227-2.568H4.094z" />
+                        </svg>
+
+
+                    </a>
+                    <a href="#" target="_blank"
+                        class="disabled inline-flex justify-center hover:text-white items-center py-2 px-4 mt-[1.5rem] text-base font-medium text-center text-custom-blue rounded-md  border-custom-blue border-2 hover:bg-custom-blue focus:ring-4 focus:ring-gray-400">
+                        See My Resume
+                    </a>
+
+                </div>
+            </div>
+            <div class="jumbotron-image hidden sm:block relative z-10" style="margin-left: 2rem;">
+                <img src="image/nerd-animate.svg" id="hero-image" alt="Image" width="650" class="animate-float">
+
+
+            </div>
+        </div>
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#ffffff" fill-opacity="1" d="M0,128L120,154.7C240,181,480,235,720,224C960,213,1200,139,1320,101.3L1440,64L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z"></path></svg> -->
+
+    </section>
+
+    <!-- Content Main -->
+
+    <!-- Content About -->
+
+    <section class=" w-[100%] flex items-center scroll-mt-8" id="about">
+        <div class="container-about px-[1rem] py-[2rem] md:p-[4rem]">
+            <div class="title m-[1rem] md:m-[2rem] text-gray-700 font-bold flex items-center justify-center flex-col">
+                <!-- <i class="fa-sharp fa-solid fa-circle-dot mr-[2rem] text-2xl"></i> -->
+                <h2 class="font-bold text-5xl text-center">About Me.</h2>
+                <p class="font-light text-center mt-[1rem]">The Journey of a Software Engineer.</p>
+            </div>
+            <div
+                class="content m-[1rem] md:m-[2rem] mt-[3rem] md:mt-[3rem] flex justify-center md:justify-around items-center flex-wrap-reverse">
+                <div class="content-desk md:w-[60%] text-gray-700 mr-0 mt-0 sm:mt-[2rem] sm:mr-[5rem]">
+                    <p class="text-lg text-justify mb-[1rem]">Hi! I'm <span class="text-custom-blue">Ario Bimo
+                            Munfadhil</span>,<br>a beginner in the world of web development, chasing dreams and sharing
+                        the excitement of coding. I am deeply fascinated by web technology and constantly strive to
+                        learn and grow.</p>
+                    <p class="text-lg text-justify">With an adventurous spirit in exploring the web world, I aspire to
+                        make positive contributions by crafting stunning digital solutions. Here, I aim to share my
+                        journey as a beginner, facing new challenges and pursuing dreams in the realm of web
+                        development.</p>
+
+                </div>
+
+                <div class="content-img md:mr-[2rem] my-[2rem] ">
+                    <img src="image/profile/person3.png" alt="Person" class="w-[300px] h-[300px]">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content About -->
+
+    <!-- Content tools -->
+
+    <section class="tools w-full project scroll-mt-8" id="tools">
+        <div class="container-tools px-[2rem] py-[2rem] m-[2rem] md:p-[4rem]">
+            <!--   -->
+            <div class="title m-[1rem] md:m-[2rem] text-gray-700 font-bold flex items-center justify-center flex-col">
+                <!-- <i class="fa-sharp fa-solid fa-circle-dot mr-[2rem] text-2xl"></i> -->
+                <h2 class="font-bold text-5xl text-center">Tools.</h2>
+                <p class="font-light text-center mt-[1rem]">Tools and Technologies I've Used.</p>
+            </div>
+            <div class="content flex justify-center items-center pb-[4rem]">
+
+
+                <div class="slider flex items-center justify-center mt-[4rem] ">
+                    <img src="image/logo/ubuntu3.png" alt="slider image"
+                        class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/vsc.png" alt="slider image" class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/vs.png" alt="slider image" class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/git.png" alt="slider image" class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/canva.png" alt="slider image" class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/html.png" alt="slider image" class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/css.png" alt="slider image" class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/js.png" alt="slider image" class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/py.png" alt="slider image" class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/php.png" alt="slider image" class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/java.png" alt="slider image" class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/cs.png" alt="slider image" class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/bs.png" alt="slider image" class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/tailwindcss.png" alt="slider image"
+                        class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/fpy.png" alt="slider image" class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/dotnet.png" alt="slider image"
+                        class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/sql.png" alt="slider image" class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/sqls.png" alt="slider image" class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/net.png" alt="slider image" class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                    <img src="image/logo/hero.png" alt="slider image" class="mx-[2rem] rounded-xl w-[200px] h-[200px]">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content tools -->
+
+    <!-- Content Portofolio -->
+    <section class="project scroll-mt-28" id="project">
+        <div class="container-project ">
+            <div class="title m-[1rem] md:m-[2rem] text-gray-700 font-bold flex items-center justify-center flex-col">
+                <!-- <i class="fa-sharp fa-solid fa-circle-dot mr-[2rem] text-2xl"></i> -->
+                <h2 class="font-bold text-5xl text-center">Project.</h2>
+                <p class="font-light text-center mt-[1rem]">Here are some of the projects<br
+                        class="block sm:hidden">I've worked on.</p>
+            </div>
+            <div class="content flex justify-center flex-wrap my-[4rem] mb-[6rem]">
+
+                <div
+                    class="card m-[2rem] sm:m-[1rem] max-w-[340px] text-[#262626] bg-gray-100 shadow-inner box-shadow-gray-500 hover:border-custom-blue rounded-lg">
+                    <div class="card-img rounded-lg">
+                        <img src="image/portofolio/Opera Snapshot_2023-08-02_173513_aplikasi-pengaduan-masyarakat-ario.000webhostapp.com.png"
+                            class="w-full rounded-t-lg" alt="">
+                    </div>
+                    <div class="card-content p-[0.5rem] pb-[1rem] px-[1rem] border-t-2 border-gray-500">
+                        <h1 class="mt-[0.5rem] text-xl font-medium">Aplikasi Perlaporan<br>Pengaduan Masyarakat</h1>
+                        <p class="mt-[0.5rem] mb-[1.2rem] text-sm font-light text-justify">Lorem, ipsum dolor sit amet
+                            consectetur adipisicing elit. Vero reiciendis illum enim omnis possimus nam ratione
+                            inventore aut iste in.</p>
+                        <div class="card-button flex justify-between content-end">
+                            <a href="https://github.com/abmptrm/ukk-Aplikasi-Pengaduan-Masyarakat" target="_blank"
+                                class="border-2 border-gray-500 text-[#262626] hover:text-white hover:bg-gray-700 py-1 px-3 mr-[0.5rem] rounded-lg text-sm"><i
+                                    class="fa-brands fa-github"></i>&ensp;Source Code</a>
+                            <a href="https://aplikasi-pengaduan-masyarakat-ario.000webhostapp.com/index.php"
+                                target="_blank"
+                                class="border-2 border-gray-500 text-[#262626] hover:text-white hover:bg-[#40C463] py-1 px-4 rounded-lg text-sm"><i
+                                    class="fa-solid fa-up-right-from-square"></i>&ensp;Demo Website</a>
+                            <!-- <a href="" class="border-2 text-[#262626] py-1 px-4 rounded-lg">button</a> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="card m-[2rem] sm:m-[1rem] max-w-[340px] text-[#262626] bg-gray-100 shadow-inner box-shadow-gray-500 hover:border-custom-blue rounded-lg">
+                    <div class="card-img rounded-lg">
+                        <img src="image/card-test.png" class="w-full rounded-t-lg" alt="">
+                    </div>
+                    <div class="card-content p-[0.5rem] pb-[1rem] px-[1rem] border-t-2 border-gray-500">
+                        <h1 class="mt-[0.5rem] text-xl font-medium">Aplikasi Peduli Diri</h1>
+                        <p class="mt-[0.5rem] mb-[1.2rem] text-sm font-light text-justify">Lorem, ipsum dolor sit amet
+                            consectetur adipisicing elit. Vero reiciendis illum enim omnis possimus nam ratione
+                            inventore aut iste in.</p>
+                        <div class="card-button flex justify-between content-end">
+                            <a href=""
+                                class="border-2 border-gray-500 text-[#262626] hover:text-white hover:bg-gray-700 py-1 px-3 mr-[0.5rem] rounded-lg text-sm"><i
+                                    class="fa-brands fa-github"></i>&ensp;Source Code</a>
+                            <a href=""
+                                class="border-2 border-gray-500 text-[#262626] hover:text-white hover:bg-[#40C463] py-1 px-4 rounded-lg text-sm"><i
+                                    class="fa-solid fa-up-right-from-square"></i>&ensp;Demo Website</a>
+                            <!-- <a href="" class="border-2 text-[#262626] py-1 px-4 rounded-lg">button</a> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="card m-[2rem] sm:m-[1rem] max-w-[340px] text-[#262626] bg-gray-100 shadow-inner box-shadow-gray-500 hover:border-custom-blue rounded-lg">
+                    <div class="card-img rounded-lg">
+                        <img src="image/card-test.png" class="w-full rounded-t-lg" alt="">
+                    </div>
+                    <div class="card-content p-[0.5rem] pb-[1rem] px-[1rem] border-t-2 border-gray-500">
+                        <h1 class="mt-[0.5rem] text-xl font-medium">Portofolio</h1>
+                        <p class="mt-[0.5rem] mb-[1.2rem] text-sm font-light text-justify">Lorem, ipsum dolor sit amet
+                            consectetur adipisicing elit. Vero reiciendis illum enim omnis possimus nam ratione
+                            inventore aut iste in.</p>
+                        <div class="card-button flex justify-between">
+                            <a href=""
+                                class="border-2 border-gray-500 text-[#262626] hover:text-white hover:bg-gray-700 py-1 px-3 mr-[0.5rem] rounded-lg text-sm"><i
+                                    class="fa-brands fa-github"></i>&ensp;Source Code</a>
+                            <a href=""
+                                class="border-2 border-gray-500 text-[#262626] hover:text-white hover:bg-[#40C463] py-1 px-4 rounded-lg text-sm"><i
+                                    class="fa-solid fa-up-right-from-square"></i>&ensp;Demo Website</a>
+                            <!-- <a href="" class="border-2 text-[#262626] py-1 px-4 rounded-lg">button</a> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="card m-[2rem] sm:m-[1rem] max-w-[340px] text-[#262626] bg-gray-100 shadow-inner box-shadow-gray-500 hover:border-custom-blue rounded-lg">
+                    <div class="card-img rounded-lg">
+                        <img src="image/card-test.png" class="w-full rounded-t-lg" alt="">
+                    </div>
+                    <div class="card-content p-[0.5rem] pb-[1rem] px-[1rem] border-t-2 border-gray-500">
+                        <h1 class="mt-[0.5rem] text-xl font-medium">Portofolio</h1>
+                        <p class="mt-[0.5rem] mb-[1.2rem] text-sm font-light text-justify">Lorem, ipsum dolor sit amet
+                            consectetur adipisicing elit. Vero reiciendis illum enim omnis possimus nam ratione
+                            inventore aut iste in.</p>
+                        <div class="card-button flex justify-between">
+                            <a href=""
+                                class="border-2 border-gray-500 text-[#262626] hover:text-white hover:bg-gray-700 py-1 px-3 mr-[0.5rem] rounded-lg text-sm"><i
+                                    class="fa-brands fa-github"></i>&ensp;Source Code</a>
+                            <a href=""
+                                class="border-2 border-gray-500 text-[#262626] hover:text-white hover:bg-[#40C463] py-1 px-4 rounded-lg text-sm"><i
+                                    class="fa-solid fa-up-right-from-square"></i>&ensp;Demo Website</a>
+                            <!-- <a href="" class="border-2 text-[#262626] py-1 px-4 rounded-lg">button</a> -->
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+            </div>
+        </div>
+    </section>
+    <!-- Content Portofolio -->
+
+    <!-- Content Contact -->
+
+    <section class="contact scroll-mt-28" id="contact">
+        <div class="containter-contact pb-[5rem]">
+            <div class="title m-[1rem] md:m-[2rem] text-gray-700 font-bold flex items-center justify-center flex-col">
+                <!-- <i class="fa-sharp fa-solid fa-circle-dot mr-[2rem] text-2xl"></i> -->
+                <h2 class="font-bold text-5xl text-center">Contact.</h2>
+                <p class="font-light text-center mt-[1rem]">I'll be happy to respond if you want to contact me.</p>
+            </div>
+            <div class="content flex justify-around my-[5rem]">
+                <div class="contact max-w-[400px] text-gray-700 hidden sm:block md:block">
+                    <h1 class="text-6xl font-bold mb-[1.5rem]">Let's<br><span class="text-6xl">Collaborate! </span></h1>
+                    <div class="bg-custom-blue mr-[1rem] mb-[1.5rem] h-[0.20rem] w-[15rem]"></div>
+                    <!-- <div class="line flex">
+                        <div class="bg-custom-blue h-[0.20rem] mr-[1rem] w-[5rem]"></div>
+                        <div class="bg-custom-blue h-[0.20rem] w-[2rem]"></div>
+                    </div> -->
+                    <p class="mb-[1.5rem]">Reach out via the contact form or email below to discuss your project or any
+                        inquiries. I'm excited to hear from you!</p>
+                    <ul class="list ">
+                        <li>
+                            <p class="flex items-center mb-[1rem]"><i
+                                    class="fa-solid fa-envelope text-xl mr-[1.3rem]  text-custom-blue"></i>ariomunfadhil@gmail.com
+                            </p>
+                        </li>
+                        <li>
+                            <p class="flex items-center mb-[1rem]"><i
+                                    class="fa-brands fa-linkedin-in text-xl mr-[1.3rem]  text-custom-blue"></i>https://www.linkedin.com/in/ario-bimo-munfadhil-939389225
+                            </p>
+                        </li>
+                        <li>
+                            <p class="flex items-center mb-[1rem]"><i
+                                    class="fa-solid fa-phone text-xl mr-[1.3rem]  text-custom-blue"></i>+62 895 6161
+                                02309</p>
+                        </li>
+                        <li>
+                            <p class="flex items-center mb-[1rem]"><i
+                                    class="fa-solid fa-location-dot text-xl mr-[1.5rem]  text-custom-blue"></i>Sukabumi
+                                Indah, Sukabumi, Bandar Lampung, Lampung</p>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="form p-[2rem] w-[320px] sm:w-[500px] rounded-lg border-2  shadow-lg">
+                    <form>
+                        <div class="relative z-0 w-full mb-6 group">
+                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                                name</label>
+                            <input type="email" id="email"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-custom-blue focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-custom-blue dark:focus:border-blue-500"
+                                placeholder="John" required>
+                        </div>
+                        <div class="relative z-0 w-full mb-6 group">
+                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                                email</label>
+                            <input type="email" id="email"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-custom-blue focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-custom-blue dark:focus:border-blue-500"
+                                placeholder="name@flowbite.com" required>
+                        </div>
+
+                        <div class="relative z-0 w-full mb-6 group">
+                            <label for="message"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                                message</label>
+                            <textarea id="message" rows="4"
+                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-custom-blue focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Write your thoughts here..." required></textarea>
+
+                        </div>
+                        <div class="relative z-0 w-full group text-center sm:text-left">
+                            <button type="submit"
+                                class="text-white bg-blue-600 hover:bg-custom-blue-dark px-[2.5rem] py-[0.5rem] rounded-lg">Submit</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+
+        </div>
+    </section>
+
+    <footer class="bg-custom-blue-dark" id="footer">
+        <div class="container-footer py-[1.5rem]">
+            <p class="text-white text-center text-md">
+                Built with ❤️ by Ario Bimo Munfadhil
+            </p>
+        </div>
+    </footer>
+
+    <!-- Content Contact -->
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+    <script type="text/javascript" src="js/slick/slick.min.js"></script>
+    <script src="js/OwlCarousel/dist/owl.carousel.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js"></script> -->
+
+    <script src="../node_modules/typed.js/dist/typed.umd.js"></script>
+    <script src="../node_modules/flowbite/dist/flowbite.min.js"></script>
+
+    <script>
+        $(".slider").slick({
+            infinite: true,
+            slidesToShow: 7,
+            slidesToScroll: 7,
+            dots: true,
+            arrow: true,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            infinite: true,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3,
+                        infinite: true,
+                        dots: false,
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2,
+                        dots: false,
+                        autoplay: true,
+                        autoplaySpeed: 2000,
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        dots: false,
+                        autoplay: true,
+                        autoplaySpeed: 2000,
+                    }
+                }
+
+            ]
+        });
+
+    </script>
+
+    <script>
+        // Get the button
+        let mybutton = document.getElementById("keAtas");
+
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function keAtas() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
+
+
+    <script>
+
+        var typed = new Typed('#kategori', {
+            strings: ['Student.', 'Tech Enthusiast.', 'Junior Software Engineer.'],
+            typeSpeed: 40,
+            backSpeed: 30,
+            loop: true,
+            cursorChar: '_'
+        });
+    </script>
+
+
+</body>
+
+</html>
