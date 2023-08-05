@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css" />
     <link rel="stylesheet" href="js/slick/slick.css">
     <link rel="stylesheet" href="js/slick/slick-theme.css">
+    <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.js">
+    <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
 
     <!-- <link rel="stylesheet" href="js/OwlCarousel/dist/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="js/OwlCarousel/dist/assets/owl.theme.default.min.css"> -->
@@ -63,7 +65,7 @@
     <!-- Navigation Bar -->
 
     <nav
-        class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600 shadow-lg ">
+        class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600 shadow-lg">
         <div
             class="container-nav max-w-screen-xl flex flex-wrap items-center justify-around py-6 px-6 md:transition-transform">
             <a href="/" class="flex items-center">
@@ -81,6 +83,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" />
                 </svg>
+                <!-- <i class="fa-solid fa-gear animate-spin" style="font-size: 1.5rem;"></i> -->
 
             </button>
             <div class="items-center justify-between hidden w-full md:flex md:w-auto" id="navbar-sticky">
@@ -117,7 +120,7 @@
     <!-- Content Main -->
 
 
-    <section class="bg-custom-blue-dark">
+    <section class="bg-custom-blue-dark pt-[0.5rem] md:pt-0">
         <div
             class="bg-white bg-blend-multiply min-h-screen w-full py-10 px-[2rem] sm:px-[4rem] pt-[5.5rem] flex justify-between items-center">
 
@@ -137,10 +140,10 @@
                     <li><a href="https://twitter.com/okvcxvx" target="_blank"><i
                                 class="fab fa-twitter text-3xl md:text-4xl mr-6 mb-6 text-gray-700 hover:text-custom-blue"></i></a>
                     </li>
-                    <li><a href="https://open.spotify.com/user/8plgb8lpkakhbyabeat9oycn4?si=4dc1f786abed466d"
+                    <!-- <li><a href="https://open.spotify.com/user/8plgb8lpkakhbyabeat9oycn4?si=4dc1f786abed466d"
                             target="_blank"><i
                                 class="fab fa-spotify text-3xl md:text-4xl mr-6 mb-6 text-gray-700 hover:text-green-500"></i></a>
-                    </li>
+                    </li> -->
                     <li><a href="https://www.linkedin.com/in/ario-bimo-munfadhil-939389225" target="_blank"><i
                                 class="fab fa-linkedin text-3xl md:text-4xl mr-6 mb-6 text-gray-700 hover:text-blue-800"></i></a>
                     </li>
@@ -184,7 +187,7 @@
 
     <!-- Content About -->
 
-    <section class=" w-[100%] flex items-center scroll-mt-8" id="about">
+    <section class=" w-[100%] flex items-center scroll-mt-16 md:scroll-mt-8" id="about">
         <div class="container-about px-[1rem] py-[2rem] md:p-[4rem]">
             <div class="title m-[1rem] md:m-[2rem] text-gray-700 font-bold flex items-center justify-center flex-col">
                 <!-- <i class="fa-sharp fa-solid fa-circle-dot mr-[2rem] text-2xl"></i> -->
@@ -211,7 +214,7 @@
 
     <!-- Content tools -->
 
-    <section class="tools w-full project scroll-mt-8" id="tools">
+    <section class="tools w-full project scroll-mt-16 md:scroll-mt-8" id="tools">
         <div class="container-tools px-[2rem] py-[2rem] m-[2rem] md:p-[4rem]">
             <!--   -->
             <div class="title m-[1rem] md:m-[2rem] text-gray-700 font-bold flex items-center justify-center flex-col">
@@ -408,34 +411,34 @@
 
                 </div>
                 <div class="form p-[2rem] w-[320px] sm:w-[500px] rounded-lg border-2  shadow-lg">
-                    <form>
+                    <form action="" method="POST">
                         <div class="relative z-0 w-full mb-6 group">
-                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
                                 name</label>
-                            <input type="email" id="email"
+                            <input type="text" id="Name"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-custom-blue focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-custom-blue dark:focus:border-blue-500"
-                                placeholder="John" required>
+                                placeholder="Name" required>
                         </div>
                         <div class="relative z-0 w-full mb-6 group">
                             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
                                 email</label>
-                            <input type="email" id="email"
+                            <input type="email" id="Email"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-custom-blue focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-custom-blue dark:focus:border-blue-500"
-                                placeholder="name@flowbite.com" required>
+                                placeholder="name@gmail.com" required>
                         </div>
 
                         <div class="relative z-0 w-full mb-6 group">
                             <label for="message"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
                                 message</label>
-                            <textarea id="message" rows="4"
+                            <textarea id="Message" rows="4"
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-custom-blue focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Write your thoughts here..." required></textarea>
 
                         </div>
                         <div class="relative z-0 w-full group text-center sm:text-left">
-                            <button type="submit"
-                                class="text-white bg-blue-600 hover:bg-custom-blue-dark px-[2.5rem] py-[0.5rem] rounded-lg">Submit</button>
+                            <button type="submit" id="btn_submit"
+                                class="text-white bg-blue-600 hover:bg-custom-blue-dark px-[2.5rem] py-[0.5rem] rounded-lg">Submit&ensp;<i class="fa-regular fa-paper-plane"></i></button>
                         </div>
                     </form>
                 </div>
@@ -456,7 +459,7 @@
 
     <!-- Content Contact -->
 
-
+    <script src="../node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
     <script type="text/javascript" src="js/slick/slick.min.js"></script>
     <script src="js/OwlCarousel/dist/owl.carousel.min.js"></script>
@@ -464,6 +467,8 @@
 
     <script src="../node_modules/typed.js/dist/typed.umd.js"></script>
     <script src="js/flowbite.min.js"></script>
+
+    <script src="js/formtotele.js"></script>
 
     <script>
         $(".slider").slick({

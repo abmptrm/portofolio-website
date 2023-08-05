@@ -2444,6 +2444,10 @@ input:checked + .toggle-bg {
   scroll-margin-top: 2.5rem;
 }
 
+.scroll-mt-11 {
+  scroll-margin-top: 2.75rem;
+}
+
 .scroll-mt-12 {
   scroll-margin-top: 3rem;
 }
@@ -2470,6 +2474,10 @@ input:checked + .toggle-bg {
 
 .scroll-mt-28 {
   scroll-margin-top: 7rem;
+}
+
+.scroll-mt-5 {
+  scroll-margin-top: 1.25rem;
 }
 
 .scroll-mt-7 {
@@ -16691,6 +16699,10 @@ input:checked + .toggle-bg {
   padding-right: 1rem;
 }
 
+.pt-0 {
+  padding-top: 0px;
+}
+
 .pt-1 {
   padding-top: 0.25rem;
 }
@@ -16705,6 +16717,10 @@ input:checked + .toggle-bg {
 
 .pt-20 {
   padding-top: 5rem;
+}
+
+.pt-\[0\.5rem\] {
+  padding-top: 0.5rem;
 }
 
 .pt-\[5\.5rem\] {
@@ -18951,6 +18967,10 @@ input:checked + .toggle-bg {
     width: auto;
   }
 
+  .md\:scroll-mt-8 {
+    scroll-margin-top: 2rem;
+  }
+
   .md\:flex-row {
     flex-direction: row;
   }
@@ -18984,6 +19004,10 @@ input:checked + .toggle-bg {
 
   .md\:p-\[4rem\] {
     padding: 4rem;
+  }
+
+  .md\:pt-0 {
+    padding-top: 0px;
   }
 
   .md\:text-4xl {
