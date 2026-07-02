@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel — Portfolio</title>
+    <link rel="shortcut icon" href="image/icons1.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== CSS RESET & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        :root {
+            --bg-primary: #0a0f1e;
+            --bg-secondary: #111827;
+            --bg-card: #1a2235;
+            --bg-card-hover: #1e2a40;
+            --border: rgba(99, 155, 255, 0.15);
+            --border-active: rgba(99, 155, 255, 0.5);
+            --accent: #0180E2;
+            --accent-light: #3da5f5;
+            --accent-glow: rgba(1, 128, 226, 0.25);
+            --danger: #ef4444;
+            --danger-glow: rgba(239, 68, 68, 0.2);
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --sidebar-w: 260px;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.4);
+            --transition: 0.2s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== LOGIN SCREEN ===== */
+        #login-screen {
+            position: fixed; inset: 0; z-index: 9999;
+            background: var(--bg-primary);
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column;
+        }
+        #login-screen .login-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3rem 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px var(--accent-glow);
+            animation: fadeUp 0.5s ease;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .login-card .logo {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 2rem;
+        }
+        .login-card .logo img { width: 42px; height: 42px; border-radius: 10px; }
+        .login-card .logo span { font-size: 1.3rem; font-weight: 700; }
+        .login-card h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .login-card p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; }
+        .form-group input {
+            width: 100%; padding: 0.75rem 1rem;
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: var(--radius-sm); color: var(--text-primary);
+            font-size: 0.95rem; font-family: inherit;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+        .form-group input:focus {
+            outline: none; border-color: var(--border-active);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+        #login-error {
+            background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3);
+            color: #fca5a5; padding: 0.6rem 1rem; border-radius: var(--radius-sm);
+            font-size: 0.85rem; margin-bottom: 1rem; display: none;
+        }
+        .btn-login {
+            width: 100%; padding: 0.85rem;
+            background: linear-gradient(135deg, var(--accent), #0060bb);
+            color: white; font-weight: 600; font-size: 1rem;
+            border: none; border-radius: var(--radius-sm);
+            cursor: pointer; transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        .btn-login:hover { transform: translateY(-1px); box-shadow: 0 8px 24px var(--accent-glow); }
+        .login-hint { text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: 1.2rem; }
+
+        /* ===== SIDEBAR ===== */
+        #sidebar {
+            position: fixed; top: 0; left: 0;
+            width: var(--sidebar-w); height: 100vh;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex; flex-direction: column;
+            z-index: 100; transition: transform 0.3s ease;
+            overflow-y: auto;
+        }
+        #sidebar::-webkit-scrollbar { width: 4px; }
+        #sidebar::-webkit-scrollbar-track { background: transparent; }
+        #sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+        .sidebar-header {
+            padding: 1.5rem 1.2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .sidebar-header img { width: 36px; border-radius: 8px; }
+        .sidebar-header span { font-weight: 700; font-size: 1rem; }
+        .sidebar-header .version { font-size: 0.7rem; color: var(--text-muted); }
+
+        .sidebar-section { padding: 0.5rem 0; }
+        .sidebar-section-title {
+            font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+            color: var(--text-muted); text-transform: uppercase;
+            padding: 0.8rem 1.2rem 0.3rem;
+        }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 0.7rem 1.2rem; cursor: pointer;
+            border-radius: var(--radius-sm); margin: 2px 0.5rem;
+            color: var(--text-secondary); font-size: 0.88rem; font-weight: 500;
+            transition: all var(--transition); text-decoration: none;
+            position: relative;
+        }
+        .nav-item i { width: 18px; text-align: center; font-size: 0.9rem; }
+        .nav-item:hover { background: var(--bg-card); color: var(--text-primary); }
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(1,128,226,0.2), rgba(1,128,226,0.1));
+            color: var(--accent-light);
+            border-left: 3px solid var(--accent);
+        }
+        .nav-item .badge {
+            margin-left: auto; background: var(--accent);
+            color: white; font-size: 0.7rem; font-weight: 700;
+            padding: 1px 6px; border-radius: 10px;
+        }
+
+        .sidebar-footer {
+            margin-top: auto; padding: 1rem 0.5rem;
+            border-top: 1px solid var(--border);
+        }
+        .btn-logout {
+            display: flex; align-items: center; gap: 10px;
+            width: 100%; padding: 0.7rem 1rem;
+            background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2);
+            color: #f87171; border-radius: var(--radius-sm);
+            cursor: pointer; font-size: 0.88rem; font-weight: 500; font-family: inherit;
+            transition: all var(--transition);
+        }
+        .btn-logout:hover { background: rgba(239,68,68,0.2); }
+
+        /* ===== MAIN CONTENT ===== */
+        #main {
+            margin-left: var(--sidebar-w);
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+        }
+
+        /* ===== TOP BAR ===== */
+        .topbar {
+            position: sticky; top: 0; z-index: 50;
+            background: rgba(17,24,39,0.85); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .topbar-left h1 { font-size: 1.3rem; font-weight: 700; }
+        .topbar-left p { color: var(--text-secondary); font-size: 0.82rem; margin-top: 2px; }
+        .topbar-right { display: flex; align-items: center; gap: 12px; }
+        .btn-view {
+            display: flex; align-items: center; gap: 8px;
+            padding: 0.5rem 1rem;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-sm); color: var(--text-secondary);
+            font-size: 0.85rem; cursor: pointer; text-decoration: none;
+            transition: all var(--transition); font-family: inherit;
+        }
+        .btn-view:hover { border-color: var(--accent); color: var(--accent-light); }
+
+        /* ===== CONTENT AREA ===== */
+        .content { padding: 2rem; flex: 1; }
+
+        /* ===== TABS ===== */
+        .tab-panel { display: none; animation: fadeIn 0.3s ease; }
+        .tab-panel.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 1.8rem;
+            box-shadow: var(--shadow); margin-bottom: 1.5rem;
+            transition: border-color var(--transition);
+        }
+        .card:hover { border-color: var(--border-active); }
+        .card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        .card-title {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 1rem; font-weight: 600;
+        }
+        .card-title i { color: var(--accent); }
+        .card-subtitle { color: var(--text-secondary); font-size: 0.82rem; margin-top: 2px; }
+
+        /* ===== FORM CONTROLS ===== */
+        .input-group { margin-bottom: 1.2rem; }
+        .input-label {
+            display: block; font-size: 0.82rem; font-weight: 500;
+            color: var(--text-secondary); margin-bottom: 6px;
+        }
+        .input-field, .textarea-field, .select-field {
+            width: 100%; padding: 0.7rem 1rem;
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: var(--radius-sm); color: var(--text-primary);
+            font-size: 0.9rem; font-family: inherit;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+        .textarea-field { resize: vertical; min-height: 100px; line-height: 1.6; }
+        .input-field:focus, .textarea-field:focus, .select-field:focus {
+            outline: none; border-color: var(--border-active);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+        .select-field option { background: var(--bg-card); }
+        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media (max-width: 640px) { .input-row { grid-template-columns: 1fr; } }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 0.6rem 1.2rem; border-radius: var(--radius-sm);
+            font-size: 0.88rem; font-weight: 600; cursor: pointer;
+            border: none; font-family: inherit;
+            transition: all 0.25s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #0060bb);
+            color: white; box-shadow: 0 4px 15px var(--accent-glow);
+        }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px var(--accent-glow); }
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #16a34a);
+            color: white; box-shadow: 0 4px 15px rgba(34,197,94,0.25);
+        }
+        .btn-success:hover { transform: translateY(-1px); }
+        .btn-danger {
+            background: rgba(239,68,68,0.15); color: #f87171;
+            border: 1px solid rgba(239,68,68,0.3);
+        }
+        .btn-danger:hover { background: rgba(239,68,68,0.25); }
+        .btn-outline {
+            background: transparent; color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent-light); }
+        .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+        .btn-icon { padding: 0.4rem 0.5rem; }
+
+        /* ===== SAVE BANNER ===== */
+        #save-banner {
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            background: var(--bg-card); border: 1px solid var(--success);
+            color: var(--success); padding: 0.8rem 1.5rem;
+            border-radius: 50px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            font-weight: 600; font-size: 0.9rem; z-index: 999;
+            display: flex; align-items: center; gap: 8px;
+            opacity: 0; pointer-events: none; transition: all 0.4s ease;
+        }
+        #save-banner.show { opacity: 1; pointer-events: all; }
+
+        /* ===== TOOLS GRID ===== */
+        .tools-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem; margin-bottom: 1.5rem;
+        }
+        .tool-item {
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: var(--radius-sm); padding: 1rem;
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            position: relative; transition: all var(--transition);
+            cursor: pointer;
+        }
+        .tool-item:hover { border-color: var(--border-active); transform: translateY(-2px); }
+        .tool-item img { width: 60px; height: 60px; object-fit: contain; border-radius: 8px; }
+        .tool-item .tool-name { font-size: 0.82rem; font-weight: 500; text-align: center; }
+        .tool-item .tool-delete {
+            position: absolute; top: -8px; right: -8px;
+            width: 22px; height: 22px; background: var(--danger);
+            color: white; border-radius: 50%; border: none;
+            font-size: 0.65rem; cursor: pointer; display: none;
+            align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .tool-item:hover .tool-delete { display: flex; }
+        .tool-add-card {
+            background: transparent; border: 2px dashed var(--border);
+            border-radius: var(--radius-sm); padding: 1rem;
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            cursor: pointer; transition: all var(--transition); color: var(--text-muted);
+        }
+        .tool-add-card:hover { border-color: var(--accent); color: var(--accent); }
+        .tool-add-card i { font-size: 1.5rem; }
+        .tool-add-card span { font-size: 0.82rem; }
+
+        /* ===== PROJECTS ===== */
+        .project-list { display: flex; flex-direction: column; gap: 1rem; }
+        .project-card {
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 1.2rem 1.5rem;
+            display: flex; align-items: center; gap: 1.5rem;
+            transition: all var(--transition);
+        }
+        .project-card:hover { border-color: var(--border-active); }
+        .project-thumbnail {
+            width: 80px; height: 60px; object-fit: cover;
+            border-radius: var(--radius-sm); flex-shrink: 0;
+            background: var(--bg-card); border: 1px solid var(--border);
+        }
+        .project-info { flex: 1; min-width: 0; }
+        .project-info h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .project-info p { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .project-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 500;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            padding: 1rem; opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.open { opacity: 1; pointer-events: all; }
+        .modal {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 16px; padding: 2rem;
+            width: 100%; max-width: 560px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transform: translateY(20px); transition: transform 0.3s ease;
+            max-height: 90vh; overflow-y: auto;
+        }
+        .modal-overlay.open .modal { transform: translateY(0); }
+        .modal-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        .modal-title { font-size: 1.1rem; font-weight: 700; }
+        .modal-close {
+            width: 32px; height: 32px; background: var(--bg-secondary);
+            border: 1px solid var(--border); border-radius: 8px;
+            color: var(--text-secondary); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all var(--transition); font-size: 0.9rem;
+        }
+        .modal-close:hover { color: var(--danger); border-color: rgba(239,68,68,0.3); }
+        .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.5rem; }
+
+        /* ===== STATS BAR ===== */
+        .stats-bar {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 1rem; margin-bottom: 2rem;
+        }
+        @media (max-width: 900px) { .stats-bar { grid-template-columns: repeat(2,1fr); } }
+        @media (max-width: 500px) { .stats-bar { grid-template-columns: 1fr; } }
+        .stat-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 1.2rem 1.5rem;
+            display: flex; align-items: center; gap: 1rem;
+        }
+        .stat-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; flex-shrink: 0;
+        }
+        .stat-icon.blue { background: rgba(1,128,226,0.15); color: var(--accent-light); }
+        .stat-icon.green { background: rgba(34,197,94,0.15); color: var(--success); }
+        .stat-icon.orange { background: rgba(245,158,11,0.15); color: var(--warning); }
+        .stat-icon.purple { background: rgba(168,85,247,0.15); color: #c084fc; }
+        .stat-value { font-size: 1.5rem; font-weight: 700; }
+        .stat-label { font-size: 0.78rem; color: var(--text-muted); }
+
+        /* ===== ALERT ===== */
+        .alert {
+            padding: 0.8rem 1rem; border-radius: var(--radius-sm);
+            font-size: 0.85rem; margin-bottom: 1rem;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .alert-info { background: rgba(1,128,226,0.1); border: 1px solid rgba(1,128,226,0.3); color: #93c5fd; }
+        .alert-warning { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); color: #fcd34d; }
+
+        /* ===== MOBILE ===== */
+        #mobile-toggle {
+            display: none; position: fixed; top: 1rem; left: 1rem; z-index: 200;
+            width: 40px; height: 40px; background: var(--bg-card);
+            border: 1px solid var(--border); border-radius: 10px;
+            color: var(--text-primary); cursor: pointer;
+            align-items: center; justify-content: center;
+        }
+        @media (max-width: 768px) {
+            #mobile-toggle { display: flex; }
+            #sidebar { transform: translateX(-100%); }
+            #sidebar.open { transform: translateX(0); }
+            #main { margin-left: 0; }
+            .content { padding: 1rem; padding-top: 4rem; }
+            .topbar { padding: 1rem; padding-left: 4rem; }
+        }
+
+        /* ===== IMAGE PREVIEW ===== */
+        .image-preview {
+            width: 100%; height: 160px;
+            background: var(--bg-secondary); border: 2px dashed var(--border);
+            border-radius: var(--radius-sm); display: flex; align-items: center;
+            justify-content: center; color: var(--text-muted);
+            cursor: pointer; transition: all var(--transition); overflow: hidden;
+            margin-bottom: 0.5rem; position: relative;
+        }
+        .image-preview:hover { border-color: var(--accent); }
+        .image-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .image-preview .placeholder { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .image-preview .placeholder i { font-size: 2rem; }
+        .image-preview .placeholder span { font-size: 0.82rem; }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* ===== TOOLTIP ===== */
+        [data-tooltip] { position: relative; }
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%);
+            background: #1e293b; color: var(--text-primary);
+            padding: 4px 8px; border-radius: 6px; font-size: 0.75rem;
+            white-space: nowrap; opacity: 0; pointer-events: none;
+            transition: opacity 0.2s; z-index: 10;
+        }
+        [data-tooltip]:hover::after { opacity: 1; }
+
+        /* ===== DRAG HANDLE ===== */
+        .drag-handle { cursor: grab; color: var(--text-muted); padding: 0 4px; }
+        .drag-handle:active { cursor: grabbing; }
+
+        /* Color Picker Wrapper */
+        .color-pair { display: flex; gap: 8px; align-items: center; }
+        .color-picker-input { width: 40px; height: 38px; padding: 2px; border-radius: 6px; cursor: pointer; border: 1px solid var(--border); background: var(--bg-secondary); }
+    </style>
+</head>
+<body>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="login-screen">
+    <div class="login-card">
+        <div class="logo">
+            <img src="image/icons1.png" alt="Logo">
+            <div>
+                <span>Portfolio Admin</span><br>
+                <span style="font-size:0.7rem;color:var(--text-muted);">v1.0</span>
+            </div>
+        </div>
+        <h2>Selamat Datang 👋</h2>
+        <p>Masuk dengan akun Google Anda untuk mengelola konten portofolio.</p>
+        <button class="btn-login" style="background: white; color: #333; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; gap: 10px;" onclick="doLogin()">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" style="width: 20px;">
+            Masuk dengan Google
+        </button>
+        <div id="login-error" style="margin-top: 1rem;"><i class="fa-solid fa-circle-exclamation"></i> <span id="login-error-msg">Akses ditolak. Email tidak terdaftar.</span></div>
+    </div>
+</div>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<!-- Firebase Config -->
+<script src="js/firebase-config.js"></script>
+
+<!-- ===== MOBILE TOGGLE ===== -->
+<button id="mobile-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+
+<!-- ===== SIDEBAR ===== -->
+<aside id="sidebar">
+    <div class="sidebar-header">
+        <img src="image/icons1.png" alt="Logo">
+        <div>
+            <span>Admin Panel</span><br>
+            <span class="version">Portfolio Manager</span>
+        </div>
+    </div>
+
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Dashboard</div>
+        <div class="nav-item active" onclick="switchTab('dashboard')" id="nav-dashboard">
+            <i class="fa-solid fa-gauge-high"></i> Overview
+        </div>
+    </div>
+
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Kelola Konten</div>
+        <div class="nav-item" onclick="switchTab('about')" id="nav-about">
+            <i class="fa-solid fa-user"></i> About Me
+        </div>
+        <div class="nav-item" onclick="switchTab('tools')" id="nav-tools">
+            <i class="fa-solid fa-wrench"></i> Tools
+        </div>
+        <div class="nav-item" onclick="switchTab('projects')" id="nav-projects">
+            <i class="fa-solid fa-folder-open"></i> Projects
+        </div>
+        <div class="nav-item" onclick="switchTab('contact')" id="nav-contact">
+            <i class="fa-solid fa-address-card"></i> Contact
+        </div>
+    </div>
+
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Lainnya</div>
+        <a href="index.html" target="_blank" class="nav-item">
+            <i class="fa-solid fa-eye"></i> Lihat Portofolio
+        </a>
+        <div class="nav-item" onclick="resetAllData()">
+            <i class="fa-solid fa-rotate-left"></i> Reset Data
+        </div>
+    </div>
+
+    <div class="sidebar-footer">
+        <button class="btn-logout" onclick="doLogout()">
+            <i class="fa-solid fa-right-from-bracket"></i> Keluar
+        </button>
+    </div>
+</aside>
+
+<!-- ===== MAIN ===== -->
+<div id="main">
+    <div class="topbar">
+        <div class="topbar-left">
+            <h1 id="page-title">Dashboard</h1>
+            <p id="page-desc">Kelola semua konten portofolio Anda</p>
+        </div>
+        <div class="topbar-right">
+            <a href="index.html" target="_blank" class="btn-view">
+                <i class="fa-solid fa-up-right-from-square"></i> Preview
+            </a>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- ===== DASHBOARD TAB ===== -->
+        <div class="tab-panel active" id="tab-dashboard">
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fa-solid fa-user"></i></div>
+                    <div>
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">About Me Section</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fa-solid fa-wrench"></i></div>
+                    <div>
+                        <div class="stat-value" id="stat-tools">0</div>
+                        <div class="stat-label">Tools Terdaftar</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="fa-solid fa-folder"></i></div>
+                    <div>
+                        <div class="stat-value" id="stat-projects">0</div>
+                        <div class="stat-label">Projects</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="fa-solid fa-address-card"></i></div>
+                    <div>
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">Contact Info</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title"><i class="fa-solid fa-bolt"></i> Quick Actions</div>
+                        <div class="card-subtitle">Akses cepat ke menu pengelolaan</div>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;">
+                    <button class="btn btn-outline" onclick="switchTab('about')" style="justify-content:center;padding:1.2rem;">
+                        <i class="fa-solid fa-user"></i> Edit About Me
+                    </button>
+                    <button class="btn btn-outline" onclick="switchTab('tools')" style="justify-content:center;padding:1.2rem;">
+                        <i class="fa-solid fa-wrench"></i> Kelola Tools
+                    </button>
+                    <button class="btn btn-outline" onclick="switchTab('projects')" style="justify-content:center;padding:1.2rem;">
+                        <i class="fa-solid fa-folder-open"></i> Kelola Project
+                    </button>
+                    <button class="btn btn-outline" onclick="switchTab('contact')" style="justify-content:center;padding:1.2rem;">
+                        <i class="fa-solid fa-address-card"></i> Edit Kontak
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fa-solid fa-circle-info"></i> Panduan Penggunaan</div>
+                </div>
+                <div class="alert alert-info">
+                    <i class="fa-solid fa-info-circle"></i>
+                    Semua perubahan yang kamu simpan akan otomatis terlihat di halaman portofolio.
+                </div>
+                <div class="alert alert-warning">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    Data disimpan di <strong>localStorage</strong> browser ini. Gunakan tombol "Export" untuk backup.
+                </div>
+                <ul style="color:var(--text-secondary);font-size:0.88rem;padding-left:1.2rem;line-height:2;">
+                    <li>Klik menu di sidebar untuk berpindah antar bagian</li>
+                    <li>Klik <strong>Simpan</strong> setelah melakukan perubahan</li>
+                    <li>Gunakan <strong>Preview</strong> untuk melihat hasil di portofolio</li>
+                    <li>Gambar project bisa diisi dengan URL gambar</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ===== ABOUT TAB ===== -->
+        <div class="tab-panel" id="tab-about">
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title"><i class="fa-solid fa-user-pen"></i> Edit About Me</div>
+                        <div class="card-subtitle">Ubah teks dan deskripsi section About Me</div>
+                    </div>
+                    <button class="btn btn-success" onclick="saveAbout()"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label">Nama Lengkap</label>
+                        <input type="text" class="input-field" id="about-name" placeholder="Nama Kamu">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Subtitle Section</label>
+                        <input type="text" class="input-field" id="about-subtitle" placeholder="The Journey of...">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Paragraf 1 (Perkenalan)</label>
+                    <textarea class="textarea-field" id="about-para1" rows="4" placeholder="Hi! I'm..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Paragraf 2 (Deskripsi Lebih Lanjut)</label>
+                    <textarea class="textarea-field" id="about-para2" rows="4" placeholder="With an adventurous spirit..."></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fa-solid fa-keyboard"></i> Typed Text (Animasi Teks)</div>
+                </div>
+                <div class="alert alert-info">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Teks-teks ini akan ditampilkan bergiliran dengan animasi mengetik di halaman utama.
+                </div>
+                <div id="typed-list"></div>
+                <button class="btn btn-outline" onclick="addTypedItem()"><i class="fa-solid fa-plus"></i> Tambah Teks</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fa-brands fa-connectdevelop"></i> Social Links</div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label"><i class="fa-brands fa-instagram" style="color:#e1306c"></i> Instagram</label>
+                        <input type="url" class="input-field" id="social-instagram" placeholder="https://instagram.com/...">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label"><i class="fa-brands fa-linkedin" style="color:#0077b5"></i> LinkedIn</label>
+                        <input type="url" class="input-field" id="social-linkedin" placeholder="https://linkedin.com/in/...">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label"><i class="fa-brands fa-github"></i> GitHub</label>
+                        <input type="url" class="input-field" id="social-github" placeholder="https://github.com/...">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label"><i class="fa-brands fa-spotify" style="color:#1db954"></i> Spotify</label>
+                        <input type="url" class="input-field" id="social-spotify" placeholder="https://open.spotify.com/...">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label"><i class="fa-brands fa-discord" style="color:#5865f2"></i> Discord</label>
+                        <input type="url" class="input-field" id="social-discord" placeholder="https://discord.gg/...">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label"><i class="fa-solid fa-file" style="color:var(--accent)"></i> URL Resume</label>
+                        <input type="url" class="input-field" id="social-resume" placeholder="https://drive.google.com/...">
+                    </div>
+                </div>
+                <div style="text-align:right;">
+                    <button class="btn btn-success" onclick="saveAbout()"><i class="fa-solid fa-floppy-disk"></i> Simpan Semua</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TOOLS TAB ===== -->
+        <div class="tab-panel" id="tab-tools">
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title"><i class="fa-solid fa-layer-group"></i> Kelola Tools & Teknologi</div>
+                        <div class="card-subtitle">Tambah, hapus, atau ubah tools yang ditampilkan</div>
+                    </div>
+                    <button class="btn btn-success" onclick="saveTools()"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Subtitle Section Tools</label>
+                    <input type="text" class="input-field" id="tools-subtitle" placeholder="Tools and Technologies I've Used.">
+                </div>
+
+                <div class="tools-grid" id="tools-grid">
+                    <!-- Rendered by JS -->
+                </div>
+                <div class="tool-add-card" onclick="openToolModal()">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Tambah Tool Baru</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PROJECTS TAB ===== -->
+        <div class="tab-panel" id="tab-projects">
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title"><i class="fa-solid fa-diagram-project"></i> Kelola Projects</div>
+                        <div class="card-subtitle">Tambah, edit, atau hapus project portofolio</div>
+                    </div>
+                    <button class="btn btn-primary" onclick="openProjectModal(-1)">
+                        <i class="fa-solid fa-plus"></i> Tambah Project
+                    </button>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Subtitle Section Project</label>
+                    <input type="text" class="input-field" id="project-subtitle" placeholder="Here are some of the projects I've worked on.">
+                </div>
+
+                <div class="project-list" id="project-list">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== CONTACT TAB ===== -->
+        <div class="tab-panel" id="tab-contact">
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title"><i class="fa-solid fa-address-book"></i> Edit Kontak</div>
+                        <div class="card-subtitle">Ubah informasi kontak di halaman portofolio</div>
+                    </div>
+                    <button class="btn btn-success" onclick="saveContact()"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Subtitle Section Contact</label>
+                    <input type="text" class="input-field" id="contact-subtitle" placeholder="I'll be happy to respond if you want to contact me.">
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label"><i class="fa-solid fa-envelope" style="color:var(--accent)"></i> Email</label>
+                        <input type="email" class="input-field" id="contact-email" placeholder="email@example.com">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label"><i class="fa-solid fa-phone" style="color:var(--accent)"></i> No. Telepon</label>
+                        <input type="text" class="input-field" id="contact-phone" placeholder="+62 8xx xxxx xxxx">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label"><i class="fa-solid fa-location-dot" style="color:var(--accent)"></i> Alamat / Kota</label>
+                        <input type="text" class="input-field" id="contact-address" placeholder="Kota, Provinsi">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label"><i class="fa-brands fa-linkedin-in" style="color:#0077b5"></i> LinkedIn URL</label>
+                        <input type="url" class="input-field" id="contact-linkedin" placeholder="https://linkedin.com/in/...">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Teks "Let's Collaborate" Heading</label>
+                    <input type="text" class="input-field" id="contact-heading" placeholder="Let's Collaborate!">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Deskripsi Kontak</label>
+                    <textarea class="textarea-field" id="contact-desc" rows="3" placeholder="Reach out via the contact form..."></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fa-solid fa-share-nodes"></i> Pengaturan Form Kontak</div>
+                </div>
+                <div class="alert alert-info">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Form kontak menggunakan Telegram Bot. Pastikan token dan chat ID sudah benar di file <code>js/formtotele.js</code>.
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label">Telegram Bot Token</label>
+                        <input type="text" class="input-field" id="tele-token" placeholder="123456:ABC-DEF...">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Telegram Chat ID</label>
+                        <input type="text" class="input-field" id="tele-chatid" placeholder="-100xxxxxxxxx">
+                    </div>
+                </div>
+                <div style="text-align:right;">
+                    <button class="btn btn-success" onclick="saveContact()"><i class="fa-solid fa-floppy-disk"></i> Simpan Semua</button>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ===== MODALS ===== -->
+
+<!-- Tool Modal -->
+<div class="modal-overlay" id="tool-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title"><i class="fa-solid fa-wrench"></i> &ensp;Tambah / Edit Tool</div>
+            <button class="modal-close" onclick="closeModal('tool-modal')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="input-group">
+            <label class="input-label">Nama Tool</label>
+            <input type="text" class="input-field" id="tool-name" placeholder="Contoh: React, Python, Arduino">
+        </div>
+        <div class="input-group">
+            <label class="input-label">URL Gambar / Path Lokal</label>
+            <input type="text" class="input-field" id="tool-img" placeholder="image/logo/js.png atau https://...">
+            <div style="margin-top:8px;color:var(--text-muted);font-size:0.8rem;">
+                Gambar lokal tersedia: ubuntu3, vsc, git, html, css, bs, tailwindcss, js, React-icon.svg, py, php, Arduino_Logo.svg, raspberrry_pi_logo, sql
+            </div>
+        </div>
+        <div class="input-group">
+            <label class="input-label">Preview</label>
+            <div style="display:flex;justify-content:center;margin-top:8px;">
+                <img id="tool-img-preview" src="" alt="preview" style="width:80px;height:80px;object-fit:contain;border-radius:8px;background:var(--bg-secondary);display:none;">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeModal('tool-modal')">Batal</button>
+            <button class="btn btn-primary" onclick="saveTool()"><i class="fa-solid fa-check"></i> Simpan Tool</button>
+        </div>
+    </div>
+</div>
+
+<!-- Project Modal -->
+<div class="modal-overlay" id="project-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title" id="project-modal-title"><i class="fa-solid fa-folder-plus"></i> &ensp;Tambah Project</div>
+            <button class="modal-close" onclick="closeModal('project-modal')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="input-group">
+            <label class="input-label">Judul Project</label>
+            <input type="text" class="input-field" id="proj-title" placeholder="Nama Project">
+        </div>
+        <div class="input-group">
+            <label class="input-label">Deskripsi Project</label>
+            <textarea class="textarea-field" id="proj-desc" rows="3" placeholder="Deskripsi singkat project..."></textarea>
+        </div>
+        <div class="input-group">
+            <label class="input-label">URL Gambar Thumbnail</label>
+            <input type="text" class="input-field" id="proj-img" placeholder="image/portofolio/gambar.png atau https://...">
+        </div>
+        <div class="input-row">
+            <div class="input-group">
+                <label class="input-label"><i class="fa-brands fa-github"></i> URL Source Code (GitHub)</label>
+                <input type="url" class="input-field" id="proj-github" placeholder="https://github.com/...">
+            </div>
+            <div class="input-group">
+                <label class="input-label"><i class="fa-solid fa-globe"></i> URL Demo Website</label>
+                <input type="url" class="input-field" id="proj-demo" placeholder="https://...">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeModal('project-modal')">Batal</button>
+            <button class="btn btn-primary" onclick="saveProject()"><i class="fa-solid fa-check"></i> Simpan Project</button>
+        </div>
+    </div>
+</div>
+
+<!-- Save Banner -->
+<div id="save-banner"><i class="fa-solid fa-circle-check"></i> Perubahan berhasil disimpan!</div>
+
+<script>
+// ===== FIREBASE INITIALIZATION =====
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+let FIRESTORE_CACHE = null;
+
+// ===== ADMIN AUTH =====
+function doLogin() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider).catch(error => {
+        showLoginError(error.message);
+    });
+}
+
+function doLogout() {
+    auth.signOut().then(() => {
+        location.reload();
+    });
+}
+
+function showLoginError(msg) {
+    const errEl = document.getElementById('login-error');
+    document.getElementById('login-error-msg').textContent = msg;
+    errEl.style.display = 'flex';
+}
+
+// Check session
+auth.onAuthStateChanged(async (user) => {
+    if (user) {
+        // Cek whitelist
+        if (ADMIN_WHITELIST.includes(user.email)) {
+            document.getElementById('login-screen').style.display = 'none';
+            await loadDataFromFirestore();
+            initAdmin();
+        } else {
+            showLoginError("Akses ditolak: Email " + user.email + " tidak ada dalam whitelist.");
+            auth.signOut();
+        }
+    } else {
+        document.getElementById('login-screen').style.display = 'flex';
+    }
+});
+
+// ===== DEFAULT DATA =====
+const DEFAULT_DATA = {
+    about: {
+        name: 'Ario Bimo Munfadhil',
+        subtitle: 'The Journey of a IoT Engineer.',
+        para1: "Hi! I'm <span class=\"text-custom-blue\">Ario Bimo Munfadhil</span>,<br>a Robotics and IoT enthusiast, a beginner in the world of technology, chasing dreams and sharing the excitement of coding. I am deeply fascinated by technology and constantly strive to learn and grow.",
+        para2: "With an adventurous spirit in exploring the tech world, I aspire to make positive contributions by crafting innovative solutions. Here, I aim to share my journey as a beginner, facing new challenges, and pursuing dreams in Robotics, IoT, and technology development.",
+        typedStrings: ['Student.', 'Tech Enthusiast.', 'IoT Engineer.', 'Robotics Engineer.'],
+        social: {
+            instagram: 'https://www.instagram.com/abrmld',
+            spotify: 'https://open.spotify.com/user/8plgb8lpkakhbyabeat9oycn4?si=4dc1f786abed466d',
+            linkedin: 'https://www.linkedin.com/in/ario-bimo-munfadhil-939389225',
+            github: 'https://github.com/abmptrm',
+            discord: 'https://discord.gg/hPuG4earFH',
+            resume: 'https://drive.google.com/file/d/164C1_bnoW6-Oz_Z1_F-dpzd9iExx0Pke/view?usp=sharing'
+        }
+    },
+    tools: {
+        subtitle: "Tools and Technologies I've Used.",
+        items: [
+            { name: 'Ubuntu', img: 'image/logo/ubuntu3.png' },
+            { name: 'VS Code', img: 'image/logo/vsc.png' },
+            { name: 'Git', img: 'image/logo/git.png' },
+            { name: 'HTML', img: 'image/logo/html.png' },
+            { name: 'CSS', img: 'image/logo/css.png' },
+            { name: 'Bootstrap', img: 'image/logo/bs.png' },
+            { name: 'Tailwind CSS', img: 'image/logo/tailwindcss.png' },
+            { name: 'JavaScript', img: 'image/logo/js.png' },
+            { name: 'React', img: 'image/logo/React-icon.svg.png' },
+            { name: 'Python', img: 'image/logo/py.png' },
+            { name: 'PHP', img: 'image/logo/php.png' },
+            { name: 'Arduino', img: 'image/logo/Arduino_Logo.svg.png' },
+            { name: 'Raspberry Pi', img: 'image/logo/raspberrry_pi_logo.png' },
+            { name: 'SQL', img: 'image/logo/sql.png' }
+        ]
+    },
+    projects: {
+        subtitle: "Here are some of the projects I've worked on.",
+        items: [
+            {
+                title: 'Aplikasi Perlaporan Pengaduan Masyarakat',
+                desc: 'Mengembangkan aplikasi berbasis web untuk membantu masyarakat dalam melaporkan pengaduan secara online, mempermudah proses pelaporan hingga tindak lanjut oleh pihak terkait.',
+                img: 'image/portofolio/Opera Snapshot_2023-08-02_173513_aplikasi-pengaduan-masyarakat-ario.000webhostapp.com.png',
+                github: 'https://github.com/abmptrm/ukk-Aplikasi-Pengaduan-Masyarakat',
+                demo: 'https://aplikasi-pengaduan-masyarakat-ario.000webhostapp.com/index.php'
+            },
+            {
+                title: 'Wind Source 9 BLDC',
+                desc: 'Proyek penelitian dosen yang mengembangkan sistem pengontrolan motor 9 BLDC dengan pengukuran real-time suhu, tekanan, dan kecepatan. Data dikumpulkan dan dianalisis melalui Firebase.',
+                img: 'image/portofolio/winds.jpg',
+                github: 'https://github.com/abmptrm/9_BLDC_Controls',
+                demo: '#'
+            },
+            {
+                title: 'Gerbang ITERA',
+                desc: 'Proyek pengembangan maket gerbang otomatis dengan sistem kontrol berbasis ESP32 sebagai master dan komunikasi serial MAX485 untuk integrasi servo, sensor metal, dan RFID.',
+                img: 'image/portofolio/gate.jpg',
+                github: '#',
+                demo: '#'
+            },
+            {
+                title: 'Conveyor Vibration Rasberry Pi 5',
+                desc: 'Proyek pengembangan sistem conveyor getar dengan kontrol inklinasi berbasis aplikasi HMI menggunakan PyQt5, untuk mengatur stepper 5 phase, memonitor suhu, dan mengukur getaran.',
+                img: 'image/portofolio/conveyor.jpg',
+                github: '#',
+                demo: '#'
+            }
+        ]
+    },
+    contact: {
+        subtitle: "I'll be happy to respond if you want to contact me.",
+        heading: "Let's Collaborate!",
+        desc: "Reach out via the contact form or email below to discuss your project or any inquiries. I'm excited to hear from you!",
+        email: 'ario.123490054@student.itera.ac.id',
+        phone: '+62 895 6161 02309',
+        address: 'Sukabumi Indah, Sukabumi, Bandar Lampung, Lampung',
+        linkedin: 'https://www.linkedin.com/in/ario-bimo-munfadhil-939389225'
+    }
+};
+
+// ===== DATA HELPERS (FIRESTORE) =====
+async function loadDataFromFirestore() {
+    try {
+        const docRef = db.collection("portfolio").doc("content");
+        const doc = await docRef.get();
+        if (doc.exists) {
+            FIRESTORE_CACHE = doc.data();
+        } else {
+            // First time migration: upload default data
+            FIRESTORE_CACHE = DEFAULT_DATA;
+            await docRef.set(DEFAULT_DATA);
+            console.log("Migrasi data default ke Firestore berhasil.");
+        }
+    } catch (e) {
+        console.error("Gagal memuat dari Firestore, cek Rules atau koneksi.", e);
+        FIRESTORE_CACHE = DEFAULT_DATA;
+    }
+}
+
+function getData(key) {
+    if (!FIRESTORE_CACHE) return DEFAULT_DATA[key];
+    return FIRESTORE_CACHE[key] || DEFAULT_DATA[key];
+}
+
+function setData(key, val) {
+    if (!FIRESTORE_CACHE) FIRESTORE_CACHE = {};
+    FIRESTORE_CACHE[key] = val;
+    
+    // Simpan ke Firestore
+    db.collection("portfolio").doc("content").set(FIRESTORE_CACHE)
+        .catch(err => {
+            console.error("Gagal menyimpan ke Firestore:", err);
+            alert("Gagal menyimpan ke database! Cek Firestore Rules Anda.");
+        });
+}
+
+// ===== INIT =====
+function initAdmin() {
+    loadAbout();
+    loadTools();
+    loadProjects();
+    loadContact();
+    updateStats();
+}
+
+// ===== SIDEBAR / TAB =====
+const tabTitles = {
+    dashboard: ['Dashboard', 'Kelola semua konten portofolio Anda'],
+    about: ['About Me', 'Edit informasi tentang diri Anda'],
+    tools: ['Tools & Teknologi', 'Kelola tools dan teknologi yang digunakan'],
+    projects: ['Projects', 'Tambah dan kelola project portofolio'],
+    contact: ['Contact', 'Edit informasi kontak']
+};
+
+function switchTab(tab) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    document.getElementById('nav-' + tab)?.classList.add('active');
+    document.getElementById('page-title').textContent = tabTitles[tab][0];
+    document.getElementById('page-desc').textContent = tabTitles[tab][1];
+    closeSidebar();
+}
+
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+}
+function closeSidebar() {
+    if (window.innerWidth < 769) document.getElementById('sidebar').classList.remove('open');
+}
+
+// ===== STATS =====
+function updateStats() {
+    const tools = getData('tools');
+    const projects = getData('projects');
+    document.getElementById('stat-tools').textContent = tools.items?.length || 0;
+    document.getElementById('stat-projects').textContent = projects.items?.length || 0;
+}
+
+// ===== SAVE BANNER =====
+function showSaveBanner() {
+    const b = document.getElementById('save-banner');
+    b.classList.add('show');
+    setTimeout(() => b.classList.remove('show'), 3000);
+}
+
+// ===== ABOUT =====
+function loadAbout() {
+    const d = getData('about');
+    document.getElementById('about-name').value = d.name || '';
+    document.getElementById('about-subtitle').value = d.subtitle || '';
+    // Strip HTML tags for plain editing
+    const tmp = document.createElement('div');
+    tmp.innerHTML = (d.para1 || '').replace(/<br>/gi, '\n').replace(/<[^>]+>/g, '');
+    document.getElementById('about-para1').value = tmp.textContent.trim();
+    tmp.innerHTML = (d.para2 || '').replace(/<br>/gi, '\n').replace(/<[^>]+>/g, '');
+    document.getElementById('about-para2').value = tmp.textContent.trim();
+    document.getElementById('social-instagram').value = d.social?.instagram || '';
+    document.getElementById('social-linkedin').value = d.social?.linkedin || '';
+    document.getElementById('social-github').value = d.social?.github || '';
+    document.getElementById('social-spotify').value = d.social?.spotify || '';
+    document.getElementById('social-discord').value = d.social?.discord || '';
+    document.getElementById('social-resume').value = d.social?.resume || '';
+    renderTypedList(d.typedStrings || []);
+}
+
+function saveAbout() {
+    const d = getData('about');
+    const name = document.getElementById('about-name').value.trim();
+    d.name = name;
+    d.subtitle = document.getElementById('about-subtitle').value.trim();
+    // Build para1 with blue name span
+    const para1Raw = document.getElementById('about-para1').value.trim();
+    if (name && para1Raw.includes(name)) {
+        d.para1 = para1Raw.replace(name, `<span class="text-custom-blue">${name}</span>`).replace(/\n/g, '<br>');
+    } else {
+        d.para1 = para1Raw.replace(/\n/g, '<br>');
+    }
+    d.para2 = document.getElementById('about-para2').value.trim().replace(/\n/g, '<br>');
+    d.social = {
+        instagram: document.getElementById('social-instagram').value.trim(),
+        linkedin: document.getElementById('social-linkedin').value.trim(),
+        github: document.getElementById('social-github').value.trim(),
+        spotify: document.getElementById('social-spotify').value.trim(),
+        discord: document.getElementById('social-discord').value.trim(),
+        resume: document.getElementById('social-resume').value.trim()
+    };
+    // collect typed strings
+    d.typedStrings = Array.from(document.querySelectorAll('.typed-input')).map(i => i.value.trim()).filter(Boolean);
+    setData('about', d);
+    showSaveBanner();
+}
+
+// Typed strings list
+function renderTypedList(arr) {
+    const el = document.getElementById('typed-list');
+    el.innerHTML = '';
+    arr.forEach((s, i) => {
+        const row = document.createElement('div');
+        row.style.cssText = 'display:flex;gap:8px;margin-bottom:8px;';
+        row.innerHTML = `
+            <input type="text" class="input-field typed-input" value="${escHtml(s)}" placeholder="Teks...">
+            <button class="btn btn-danger btn-sm btn-icon" onclick="removeTypedItem(${i})" data-tooltip="Hapus"><i class="fa-solid fa-trash"></i></button>
+        `;
+        el.appendChild(row);
+    });
+}
+
+function addTypedItem() {
+    const arr = Array.from(document.querySelectorAll('.typed-input')).map(i => i.value.trim());
+    arr.push('');
+    renderTypedList(arr);
+}
+
+function removeTypedItem(idx) {
+    const arr = Array.from(document.querySelectorAll('.typed-input')).map(i => i.value.trim());
+    arr.splice(idx, 1);
+    renderTypedList(arr);
+}
+
+// ===== TOOLS =====
+function loadTools() {
+    const d = getData('tools');
+    document.getElementById('tools-subtitle').value = d.subtitle || '';
+    renderToolsGrid(d.items || []);
+}
+
+function renderToolsGrid(items) {
+    const grid = document.getElementById('tools-grid');
+    grid.innerHTML = '';
+    items.forEach((item, i) => {
+        const el = document.createElement('div');
+        el.className = 'tool-item';
+        el.innerHTML = `
+            <button class="tool-delete" onclick="deleteTool(${i})"><i class="fa-solid fa-xmark"></i></button>
+            <img src="${escHtml(item.img)}" alt="${escHtml(item.name)}" onerror="this.src='image/icons2.png'">
+            <div class="tool-name">${escHtml(item.name)}</div>
+        `;
+        grid.appendChild(el);
+    });
+}
+
+let editingToolIdx = -1;
+
+function openToolModal(idx = -1) {
+    editingToolIdx = idx;
+    const d = getData('tools');
+    if (idx >= 0) {
+        const t = d.items[idx];
+        document.getElementById('tool-name').value = t.name;
+        document.getElementById('tool-img').value = t.img;
+        previewToolImg(t.img);
+    } else {
+        document.getElementById('tool-name').value = '';
+        document.getElementById('tool-img').value = '';
+        document.getElementById('tool-img-preview').style.display = 'none';
+    }
+    openModal('tool-modal');
+}
+
+document.getElementById('tool-img').addEventListener('input', function () {
+    previewToolImg(this.value);
+});
+
+function previewToolImg(url) {
+    const img = document.getElementById('tool-img-preview');
+    if (url) {
+        img.src = url;
+        img.style.display = 'block';
+    } else {
+        img.style.display = 'none';
+    }
+}
+
+function saveTool() {
+    const name = document.getElementById('tool-name').value.trim();
+    const img = document.getElementById('tool-img').value.trim();
+    if (!name) { alert('Nama tool tidak boleh kosong!'); return; }
+    const d = getData('tools');
+    if (editingToolIdx >= 0) {
+        d.items[editingToolIdx] = { name, img };
+    } else {
+        d.items.push({ name, img });
+    }
+    setData('tools', d);
+    renderToolsGrid(d.items);
+    updateStats();
+    closeModal('tool-modal');
+    showSaveBanner();
+}
+
+function deleteTool(idx) {
+    if (!confirm('Hapus tool ini?')) return;
+    const d = getData('tools');
+    d.items.splice(idx, 1);
+    setData('tools', d);
+    renderToolsGrid(d.items);
+    updateStats();
+    showSaveBanner();
+}
+
+function saveTools() {
+    const d = getData('tools');
+    d.subtitle = document.getElementById('tools-subtitle').value.trim();
+    setData('tools', d);
+    showSaveBanner();
+}
+
+// ===== PROJECTS =====
+function loadProjects() {
+    const d = getData('projects');
+    document.getElementById('project-subtitle').value = d.subtitle || '';
+    renderProjectList(d.items || []);
+}
+
+function renderProjectList(items) {
+    const list = document.getElementById('project-list');
+    list.innerHTML = '';
+    if (!items.length) {
+        list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:2rem;">Belum ada project. Klik "Tambah Project" untuk menambahkan.</div>';
+        return;
+    }
+    items.forEach((item, i) => {
+        const el = document.createElement('div');
+        el.className = 'project-card';
+        el.innerHTML = `
+            <img src="${escHtml(item.img)}" class="project-thumbnail" alt="${escHtml(item.title)}" onerror="this.src='image/icons2.png'">
+            <div class="project-info">
+                <h3>${escHtml(item.title)}</h3>
+                <p>${escHtml(item.desc)}</p>
+            </div>
+            <div class="project-actions">
+                <button class="btn btn-outline btn-sm" onclick="openProjectModal(${i})"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button class="btn btn-danger btn-sm" onclick="deleteProject(${i})"><i class="fa-solid fa-trash"></i></button>
+            </div>
+        `;
+        list.appendChild(el);
+    });
+}
+
+let editingProjectIdx = -1;
+
+function openProjectModal(idx) {
+    editingProjectIdx = idx;
+    const d = getData('projects');
+    const title = document.getElementById('project-modal-title');
+    if (idx >= 0) {
+        const p = d.items[idx];
+        document.getElementById('proj-title').value = p.title;
+        document.getElementById('proj-desc').value = p.desc;
+        document.getElementById('proj-img').value = p.img;
+        document.getElementById('proj-github').value = p.github;
+        document.getElementById('proj-demo').value = p.demo;
+        title.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> &ensp;Edit Project';
+    } else {
+        document.getElementById('proj-title').value = '';
+        document.getElementById('proj-desc').value = '';
+        document.getElementById('proj-img').value = '';
+        document.getElementById('proj-github').value = '';
+        document.getElementById('proj-demo').value = '';
+        title.innerHTML = '<i class="fa-solid fa-folder-plus"></i> &ensp;Tambah Project';
+    }
+    openModal('project-modal');
+}
+
+function saveProject() {
+    const title = document.getElementById('proj-title').value.trim();
+    if (!title) { alert('Judul project tidak boleh kosong!'); return; }
+    const project = {
+        title,
+        desc: document.getElementById('proj-desc').value.trim(),
+        img: document.getElementById('proj-img').value.trim(),
+        github: document.getElementById('proj-github').value.trim() || '#',
+        demo: document.getElementById('proj-demo').value.trim() || '#'
+    };
+    const d = getData('projects');
+    if (editingProjectIdx >= 0) {
+        d.items[editingProjectIdx] = project;
+    } else {
+        d.items.push(project);
+    }
+    // Save subtitle too
+    d.subtitle = document.getElementById('project-subtitle').value.trim();
+    setData('projects', d);
+    renderProjectList(d.items);
+    updateStats();
+    closeModal('project-modal');
+    showSaveBanner();
+}
+
+function deleteProject(idx) {
+    if (!confirm('Hapus project ini?')) return;
+    const d = getData('projects');
+    d.items.splice(idx, 1);
+    setData('projects', d);
+    renderProjectList(d.items);
+    updateStats();
+    showSaveBanner();
+}
+
+function saveProjects() {
+    const d = getData('projects');
+    d.subtitle = document.getElementById('project-subtitle').value.trim();
+    setData('projects', d);
+    showSaveBanner();
+}
+
+// ===== CONTACT =====
+function loadContact() {
+    const d = getData('contact');
+    document.getElementById('contact-subtitle').value = d.subtitle || '';
+    document.getElementById('contact-heading').value = d.heading || '';
+    document.getElementById('contact-desc').value = d.desc || '';
+    document.getElementById('contact-email').value = d.email || '';
+    document.getElementById('contact-phone').value = d.phone || '';
+    document.getElementById('contact-address').value = d.address || '';
+    document.getElementById('contact-linkedin').value = d.linkedin || '';
+    // Telegram settings
+    const teleConfig = JSON.parse(localStorage.getItem('portfolio_telegram') || '{}');
+    document.getElementById('tele-token').value = teleConfig.token || '';
+    document.getElementById('tele-chatid').value = teleConfig.chatid || '';
+}
+
+function saveContact() {
+    const d = {
+        subtitle: document.getElementById('contact-subtitle').value.trim(),
+        heading: document.getElementById('contact-heading').value.trim(),
+        desc: document.getElementById('contact-desc').value.trim(),
+        email: document.getElementById('contact-email').value.trim(),
+        phone: document.getElementById('contact-phone').value.trim(),
+        address: document.getElementById('contact-address').value.trim(),
+        linkedin: document.getElementById('contact-linkedin').value.trim()
+    };
+    setData('contact', d);
+    // Save telegram config
+    const teleConfig = {
+        token: document.getElementById('tele-token').value.trim(),
+        chatid: document.getElementById('tele-chatid').value.trim()
+    };
+    localStorage.setItem('portfolio_telegram', JSON.stringify(teleConfig));
+    showSaveBanner();
+}
+
+// ===== RESET =====
+function resetAllData() {
+    if (!confirm('Reset semua data ke default? Semua perubahan akan hilang dan ditimpa di Firestore!')) return;
+    FIRESTORE_CACHE = DEFAULT_DATA;
+    db.collection("portfolio").doc("content").set(DEFAULT_DATA).then(() => {
+        initAdmin();
+        showSaveBanner();
+        alert('Data berhasil direset ke default!');
+    }).catch(e => {
+        console.error("Gagal mereset Firestore:", e);
+        alert("Gagal mereset! Cek Firestore Rules.");
+    });
+}
+
+// ===== MODAL HELPERS =====
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', function (e) {
+        if (e.target === this) this.classList.remove('open');
+    });
+});
+
+// ===== UTILS =====
+function escHtml(str) {
+    return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+</script>
+</body>
+</html>
