@@ -1031,8 +1031,20 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <!-- Firebase Config -->
-    <script src="js/firebase-config.js"></script>
+    <script>
+      window.firebaseConfig = {
+        apiKey: "AIzaSyA0M4m_Se60LCKxyxY8mWkeUTF9dmtVS1U",
+        authDomain: "portofolioweb-f6e7d.firebaseapp.com",
+        projectId: "portofolioweb-f6e7d",
+        storageBucket: "portofolioweb-f6e7d.firebasestorage.app",
+        messagingSenderId: "1099317688139",
+        appId: "1:1099317688139:web:7fe4b95b1384b4f40c9ace",
+      };
+      window.ADMIN_WHITELIST = [
+        "ariobimomunfadhil@gmail.com",
+        "ario.123490054@student.itera.ac.id",
+      ];
+    </script>
 
     <!-- ===== MOBILE TOGGLE ===== -->
     <button id="mobile-toggle" onclick="toggleSidebar()">
@@ -1755,17 +1767,32 @@
       }
 
       function initializeFirebase() {
-        if (!window.firebase || !window.firebaseConfig) {
+        if (
+          !window.firebase ||
+          typeof window.firebase.initializeApp !== "function"
+        ) {
           showLoginError(
-            "Firebase tidak bisa dimuat. Periksa koneksi atau konfigurasi.",
+            "Firebase SDK belum termuat. Coba muat ulang halaman.",
           );
           return false;
         }
 
-        firebase.initializeApp(window.firebaseConfig);
-        auth = firebase.auth();
-        db = firebase.firestore();
-        return true;
+        if (!window.firebaseConfig || !window.firebaseConfig.projectId) {
+          showLoginError("Konfigurasi Firebase tidak tersedia.");
+          return false;
+        }
+
+        try {
+          if (!firebase.apps.length) {
+            firebase.initializeApp(window.firebaseConfig);
+          }
+          auth = firebase.auth();
+          db = firebase.firestore();
+          return true;
+        } catch (error) {
+          showLoginError("Gagal menginisialisasi Firebase: " + error.message);
+          return false;
+        }
       }
 
       if (initializeFirebase()) {
