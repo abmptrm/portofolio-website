@@ -997,7 +997,7 @@
           </div>
         </div>
         <h2>Selamat Datang 👋</h2>
-        <p>Masuk dengan akun Google Anda untuk mengelola konten portofolio.</p>
+        <p>Masuk dengan akun Google untuk mengelola konten portofolio.</p>
         <button
           class="btn-login"
           style="
@@ -1012,7 +1012,7 @@
           onclick="doLogin()"
         >
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/500px-Google_Favicon_2025.svg.png"
             alt="Google"
             style="width: 20px"
           />
@@ -1726,31 +1726,6 @@
             placeholder="image/portofolio/gambar.png atau https://..."
           />
         </div>
-        <div class="input-row">
-          <div class="input-group">
-            <label class="input-label"
-              ><i class="fa-brands fa-github"></i> URL Source Code
-              (GitHub)</label
-            >
-            <input
-              type="url"
-              class="input-field"
-              id="proj-github"
-              placeholder="https://github.com/..."
-            />
-          </div>
-          <div class="input-group">
-            <label class="input-label"
-              ><i class="fa-solid fa-globe"></i> URL Demo Website</label
-            >
-            <input
-              type="url"
-              class="input-field"
-              id="proj-demo"
-              placeholder="https://..."
-            />
-          </div>
-        </div>
         <div class="modal-footer">
           <button class="btn btn-outline" onclick="closeModal('project-modal')">
             Batal
@@ -1787,7 +1762,7 @@
           return false;
         }
 
-        firebase.initializeApp(firebaseConfig);
+        firebase.initializeApp(window.firebaseConfig);
         auth = firebase.auth();
         db = firebase.firestore();
         return true;
@@ -1822,7 +1797,7 @@
         auth.onAuthStateChanged(async (user) => {
           if (user) {
             // Cek whitelist
-            if (ADMIN_WHITELIST.includes(user.email)) {
+            if (window.ADMIN_WHITELIST.includes(user.email)) {
               document.getElementById("login-screen").style.display = "none";
               await loadDataFromFirestore();
               initAdmin();
@@ -1887,38 +1862,9 @@
           ],
         },
         projects: {
-          subtitle: "Here are some of the projects I've worked on.",
-          items: [
-            {
-              title: "Aplikasi Perlaporan Pengaduan Masyarakat",
-              desc: "Mengembangkan aplikasi berbasis web untuk membantu masyarakat dalam melaporkan pengaduan secara online, mempermudah proses pelaporan hingga tindak lanjut oleh pihak terkait.",
-              img: "image/portofolio/Opera Snapshot_2023-08-02_173513_aplikasi-pengaduan-masyarakat-ario.000webhostapp.com.png",
-              github:
-                "https://github.com/abmptrm/ukk-Aplikasi-Pengaduan-Masyarakat",
-              demo: "https://aplikasi-pengaduan-masyarakat-ario.000webhostapp.com/index.php",
-            },
-            {
-              title: "Wind Source 9 BLDC",
-              desc: "Proyek penelitian dosen yang mengembangkan sistem pengontrolan motor 9 BLDC dengan pengukuran real-time suhu, tekanan, dan kecepatan. Data dikumpulkan dan dianalisis melalui Firebase.",
-              img: "image/portofolio/winds.jpg",
-              github: "https://github.com/abmptrm/9_BLDC_Controls",
-              demo: "#",
-            },
-            {
-              title: "Gerbang ITERA",
-              desc: "Proyek pengembangan maket gerbang otomatis dengan sistem kontrol berbasis ESP32 sebagai master dan komunikasi serial MAX485 untuk integrasi servo, sensor metal, dan RFID.",
-              img: "image/portofolio/gate.jpg",
-              github: "#",
-              demo: "#",
-            },
-            {
-              title: "Conveyor Vibration Rasberry Pi 5",
-              desc: "Proyek pengembangan sistem conveyor getar dengan kontrol inklinasi berbasis aplikasi HMI menggunakan PyQt5, untuk mengatur stepper 5 phase, memonitor suhu, dan mengukur getaran.",
-              img: "image/portofolio/conveyor.jpg",
-              github: "#",
-              demo: "#",
-            },
-          ],
+          subtitle:
+            "Projects will appear here once you add them in the admin panel.",
+          items: [],
         },
         contact: {
           subtitle: "I'll be happy to respond if you want to contact me.",
@@ -2262,16 +2208,12 @@
           document.getElementById("proj-title").value = p.title;
           document.getElementById("proj-desc").value = p.desc;
           document.getElementById("proj-img").value = p.img;
-          document.getElementById("proj-github").value = p.github;
-          document.getElementById("proj-demo").value = p.demo;
           title.innerHTML =
             '<i class="fa-solid fa-pen-to-square"></i> &ensp;Edit Project';
         } else {
           document.getElementById("proj-title").value = "";
           document.getElementById("proj-desc").value = "";
           document.getElementById("proj-img").value = "";
-          document.getElementById("proj-github").value = "";
-          document.getElementById("proj-demo").value = "";
           title.innerHTML =
             '<i class="fa-solid fa-folder-plus"></i> &ensp;Tambah Project';
         }
@@ -2288,8 +2230,6 @@
           title,
           desc: document.getElementById("proj-desc").value.trim(),
           img: document.getElementById("proj-img").value.trim(),
-          github: document.getElementById("proj-github").value.trim() || "#",
-          demo: document.getElementById("proj-demo").value.trim() || "#",
         };
         const d = getData("projects");
         if (editingProjectIdx >= 0) {
